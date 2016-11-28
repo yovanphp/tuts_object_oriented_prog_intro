@@ -1,0 +1,12 @@
+1. In PHP classes and functions must have a unique name to function without pbs.
+Larger project use third party libraries, which may contain conflicting names.
+Till now all our code existed in the Global namespace. Namespace = package.
+
+If we try to include two User classes in our code, we will get an error.
+We should give the classes namespaces so that there is no conflict.
+For example for the Library/User.php class we give it a namespace. Words are separated by \.
+namespace Library\Auth\classes;
+
+We have to include the file in our code: require 'Library/User.php';
+To use the Library/User.php class we have to prefix the class with the namespace:
+$john = new Library\Auth\classes\User();

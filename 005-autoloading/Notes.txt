@@ -1,0 +1,16 @@
+1. We have till now included php files manually in other php files. This is not practical and unmanageable in bigger projects.
+The autoloader is called automatically when a reference to a class is not called yet. The autoloader searches and loads the file automatically.
+
+2. An autoloader is just a function that contains certain rules and conditions.
+We can call this function whatever we want.
+Note: dir(__FILE__) returns the absolute path of the current folder.
+So basically here if our code requires a class that has not been defined, the autoloader, here placed in the Helper.php file will search for the file name in the Helper.php directory.
+
+function autoload($className) {
+	$file = dirname(__FILE__) . '/' .$className . 'php';
+	if(file_exists($file)) {
+		require $file;
+	}
+}
+
+spl_autoload_register('autoload');

@@ -1,0 +1,54 @@
+1. We will restore our autoloader.
+PSR-0 - Propposed standard recommendation. - standard about code structure and formatting.
+- Good for interoperability betweem frameworks and standards.
+
+For example the following describes the mandatoru requirements that must be adhered to for autoloader interoperability.
+Mandatory:
+-----------
+1. A fully qualified namespace and class must have the following structure \<Vendor Name>\(<Namespace>\)*<Class name>
+2. Each namespace must have a top level namespace ('Vendor name').
+3. Each namespace can have as many sub-names as it wishes.
+4. Each namespace separator is converted to a DIRECTORY_SEPARATOR when loading from the file system.
+5. Each _ character in the CLASS NAME is converted to a DIRECTORY_SEPARATOR. The _ character has no special meaning in the namespace.
+6. The fully-qualified namespace and class is suffixed with .php when loading from the file system.
+7. Alphanumeric characters in vendor names, namespaces, and class names may be of any combination of lower case and upper case.
+
+Examples
+---------
+1. \Doctrine\Common\IsolatedClassLoader => /path/to/project/lib/vendor/Doctrine/Common/IsolatedClassLoader.php
+2. \Symfony\Core\Request => /path/to/project/lib/vendor/Sumfony/Core/Request.php
+3. \Zend/Acl => /path/to/project/lib/vendor/Acl.php
+4. \Zend\Mail\Message => /path/to/project/lib/vendor/Zend/Main/Message.php
+
+1. First we name our application by the vendor name, i.e Yovan
+2. In this folder we must have only classes, so we move the Helper class out of the Yovan folder, to the root pf the project.
+3. In each classes, we add a namespace: namespace Yovan\model for example in the User class, Yovan\utils in the Validator class and Libary in the vendor User class.
+4. We create an autoload.php file and include the Helper.php file and add code to scan for our classes defined in namespaces.
+5. We require the autoload.php file in our index.php file.
+6. If we were to use a specific User class, we must now prefix it with the namespace.
+7. Suppose we would like to access the Validator class in our \Libray\User class.
+<?php 
+namespace Library;
+class User {
+	public function __construct() {
+		echo 'Hello from vendor User class';
+		var_dump(new Yovan\utils\Validator);
+	}
+}
+This will not work as the autoloader is trying to access the file: Library\Yovan\utils\Validator.php, instead of Yovan\utils\Validator.php.
+
+The autoloader is searching in the namespace that it is currently in which is Library.
+
+Three possible solutions:
+1. Precede the namespace of the Validator with a \. This tells PHP to look relative to the Global namespace. i.e var_dump(new \Yovan\utils\Validator);
+
+2. We should include the Validator class using use and call the Validator class directly in our code:
+use Yovan\utils\Validator;
+var_dump(new Validator);
+PHP hence knows that we are trying to call Yovan/utils/Validator.php
+Note: use statements can either be put one after another or on a single line separated by ,
+
+3. We can also create an alias for our statement with our use declaration.
+use Yovan\utils\Validator as SuperValidator, we can use SuperValidator instead of validator in our code.
+This is handy when the class we want to call has the same name as our current class.
+

@@ -1,0 +1,1 @@
+1. Apply the Validator class methods to a new user.

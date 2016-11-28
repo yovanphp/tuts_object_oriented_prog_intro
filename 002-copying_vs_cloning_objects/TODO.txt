@@ -1,0 +1,6 @@
+1. Generic constructor with an array as parameter. For example:
+public function __construct($fields=[]) {
+	foreach($fields as $field => $value) {
+		$this->$field = $value;
+	}
+}

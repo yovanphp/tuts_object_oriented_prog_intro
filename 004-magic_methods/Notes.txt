@@ -1,0 +1,34 @@
+1. 
+- Magic methods are used invisibly. 
+- We should document them well as they are confusing. 
+- Preceded with two __
+- When we call the new User, we are just hooking into the magic methods.
+ Example: 
+public function __construct(Array $params) {
+	if(count($params) > 0)
+		foreach ($params as $field => $value) {
+			$this->$field = $value;
+		}
+}
+
+Example 2:
+The method __set($name, $value) is called when we are trying to set an inaccessible property in an object.
+For example $yovan->email = 'yovan.juggoo@yahoo.com'; would raise an error if we don't define the __set($name, $value) method in our class.
+We should also note that if we don't test for non-existant fields, we can set them on our object.
+For example $yovan->profession  = 'Programmer';
+var_dump($yovan) shows a user object with the additional non existant field.
+
+public function __set($name, $value) {
+	$this->$name = $value;
+}
+
+public function __set($name, $value) {
+ if(isset($this->$name)) {
+ 	$this->$name = $value;
+ }
+}
+
+Example 2: Suppose we pass a $data array to our __construct method, having a non existing field.
+Because of our check in our __set method, the inexistent field is not set. Hence we can conclude that when we run the constructor, in the backgound we are using the magic set method to set the values of properties.
+
+Complete the notes
